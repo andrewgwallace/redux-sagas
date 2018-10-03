@@ -1,8 +1,13 @@
 /*eslint-disable no-unused-vars */
 import React, { Component, PropTypes } from 'react'
 
-const Counter = ({ value, onIncrement, onDecrement }) =>
+// Adding an asynchronous call to the Counter component which needs to connected to a Store action (main.js)
+const Counter = ({ value, onIncrement, onDecrement, onIncrementAsync }) =>
       <div>
+        <button onClick={onIncrementAsync}>
+          Increment after 1 second
+        </button>
+        {' '}
         <button onClick={onIncrement}>
           Increment
         </button>
