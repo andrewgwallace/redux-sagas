@@ -4,7 +4,7 @@
 // This will be used to block the Generator.
 // Sagas are Generator functions that yield objets to the redux-saga middleware. Learn more here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
 import { delay } from 'redux-saga' 
-import { put, takeEvery, all } from 'redux-saga/effects'
+import { put, takeEvery, all, call } from 'redux-saga/effects'
 
 export function* helloSaga() {
     console.log('Hello Sagas!')
@@ -14,7 +14,11 @@ export function* helloSaga() {
 // Once resolved, the middleware resumes the Saga until the next yield. In this case, is then put. "put" is referred to as an Effect; A simple JS object which contains instruction to be fulfilled by the middleware.
 // The Saga is paused until the middleware fulfills the effect, in this case 'INCREMENT'
 export function* incrementAsync() {
-    yield delay(1000)
+    // yield delay(1000) 
+    // This above method is evaluated before it gets passed to the 'next' caller (which could be a test or our middleware) and will result in a Promise being returned, not good!
+    // Instead we should use 'call' Effect which is passed to the 'next' caller. 'call' returns an Effect which instructs the middleware to call a givcen function with the provided arguments.
+    // REMEMBER: effects such as 'put' and 'call' don't actually perform a dispatch or asynchronous call. They simply return plain JS objects
+    yield call(delay, 1000)
     yield put({ type: 'INCREMENT' })
 }
 
